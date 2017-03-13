@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="sportsStore">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>My AngularJS App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- build:css css/style.min.css -->
+  <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+  <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet"/>
+  <!-- endbuild -->
+
+  <!-- build:js js/angular_lib.min.js -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:js js/app.min.js -->
+  <script src="app.js"></script>
+  <script src="controllers/sportsStore.js"></script>
+  <script src="controllers/productListController.js"></script>
+  <script src="filters/customFilters.js"></script>
+  <!-- endbuild -->
+
+</head>
+<body ng-controller="sportsStoreCtrl as sCtrl">
+  <div class="navbar navbar-inverse">
+    <a class="navbar-brand" href="#">SPORTS STORE</a>
+  </div>
+  <div class="panel panel-default row" ng-controller="productListCtrl as pCtrl">
+    <div class="col-xs-3">
+      <a ng-click="selectCategory()"
+         class="btn btn-block btn-default btn-lg">Home</a>
+      <a ng-repeat="item in sCtrl.products | orderBy: 'category' | unique: 'category'"
+         ng-click="pCtrl.selectCategory(item)"
+         class="btn btn-block btn-default btn-lg"
+         ng-class="pCtrl.getCategoryClass(item)"
+      >
+        {{item}}
+      </a>
+
+    </div>
+    <div class="col-xs-8">
+      <div class="well" ng-repeat="item in sCtrl.products | filter:pCtrl.categoryFilterFn">
+        <h3>
+          <strong>{{item.name}}</strong>
+          <span class="pull-right label label-primary">
+            {{item.price | currency }}
+          </span>
+        </h3>
+        <span class="lead">{{item.description}}</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
